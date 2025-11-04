@@ -1,0 +1,5 @@
+{
+  "name": "Brat Font Generator",
+  "description": "An open-source tool to generate text in the style of Charli XCX's 'brat' album cover. Customize text, color, width, blur, and more to replicate the iconic low-fidelity, stretched font effect. Download your creation as a PNG or copy the CSS code.",
+  "requestFramePermissions": []
+}
