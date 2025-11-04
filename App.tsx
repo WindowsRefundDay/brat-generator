@@ -35,24 +35,41 @@ const App: React.FC = () => {
   const [isCopied, handleCopy] = useCopyToClipboard();
 
   const generateCss = useCallback(() => {
+    const downscaleFactor = styles.pixelation > 1 ? styles.pixelation : 1;
+
     return `
 /*
- * NOTE: The pixelation effect is a rendering trick achieved by
- * downscaling and then upscaling the text element. This is not
- * easily replicable with a single CSS class and requires a specific
- * HTML structure. The CSS below provides the base style.
+ * NOTE: The pixelation effect requires a specific HTML structure.
+ * Wrap your text element with a wrapper and apply these classes accordingly.
+ *
+ * <div class="brat-wrapper">
+ *   <div class="brat-text">
+ *     ${styles.text || 'your text here'}
+ *   </div>
+ * </div>
  */
+
+.brat-wrapper {
+  transform: scale(${downscaleFactor});
+  transform-origin: center;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: crisp-edges; /* Old Chrome */
+}
+
 .brat-text {
   font-family: 'Arial Narrow', 'Archivo Narrow', Arial, sans-serif;
   text-transform: lowercase;
   color: ${styles.textColor};
-  font-size: ${styles.fontSize}px;
-  letter-spacing: ${styles.letterSpacing}px;
-  filter: blur(${styles.blur}px);
+  font-size: ${styles.fontSize / downscaleFactor}px;
+  letter-spacing: ${styles.letterSpacing / downscaleFactor}px;
+  filter: blur(${styles.blur / downscaleFactor}px);
   /* For transform to work correctly */
   display: inline-block;
   transform: scaleX(${styles.width / 100});
   transform-origin: left;
+  line-height: 1;
+  white-space: pre;
 }
     `.trim();
   }, [styles]);
